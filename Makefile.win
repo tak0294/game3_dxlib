@@ -1,33 +1,31 @@
 # Project: game3
-# Makefile created by Dev-C++ 4.9.9.2
+# Makefile created by Dev-C++ 5.10
 
-CPP  = g++.exe
-CC   = gcc.exe
-WINDRES = windres.exe
-RES  = 
-OBJ  = main.o source/Video.o $(RES)
-LINKOBJ  = main.o source/Video.o $(RES)
-LIBS =  -L"C:/Dev-Cpp/lib" -L"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -mwindows -lDxLib -lDxUseCLib -lDxDrawFunc -ljpeg -lpng -lzlib -ltiff -ltheora_static -lvorbis_static -lvorbisfile_static -logg_static -lbulletdynamics -lbulletcollision -lbulletmath  
-INCS =  -I"C:/Dev-Cpp/include"  -I"include" 
-CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include"  -I"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用"  -I"include" 
-BIN  = game3.exe
-CXXFLAGS = $(CXXINCS) -DDX_GCC_COMPILE -DDX_NON_INLINE_ASM  
-CFLAGS = $(INCS)  
-RM = rm -f
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = main.o source/library/Video.o
+LINKOBJ  = main.o source/library/Video.o
+LIBS     = -L"C:/Program Files/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -static-libgcc -mwindows -lDxLib -lDxUseCLib -lDxDrawFunc -ljpeg -lpng -lzlib -ltiff -ltheora_static -lvorbis_static -lvorbisfile_static -logg_static -lbulletdynamics -lbulletcollision -lbulletmath -m32
+INCS     = -I"C:/Program Files/Dev-Cpp/MinGW64/include" -I"C:/Program Files/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"include"
+CXXINCS  = -I"C:/Program Files/Dev-Cpp/MinGW64/include" -I"C:/Program Files/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Program Files/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++" -I"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -I"include"
+BIN      = game3.exe
+CXXFLAGS = $(CXXINCS) -m32 -DDX_GCC_COMPILE -DDX_NON_INLINE_ASM
+CFLAGS   = $(INCS) -m32
+RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
 
-all: all-before game3.exe all-after
-
+all: all-before $(BIN) all-after
 
 clean: clean-custom
 	${RM} $(OBJ) $(BIN)
 
 $(BIN): $(OBJ)
-	$(CPP) $(LINKOBJ) -o "game3.exe" $(LIBS)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
 
-source/Video.o: source/Video.cpp
-	$(CPP) -c source/Video.cpp -o source/Video.o $(CXXFLAGS)
+source/library/Video.o: source/library/Video.cpp
+	$(CPP) -c source/library/Video.cpp -o source/library/Video.o $(CXXFLAGS)
