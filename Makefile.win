@@ -1,0 +1,33 @@
+# Project: game3
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = main.o source/Video.o $(RES)
+LINKOBJ  = main.o source/Video.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -L"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -mwindows -lDxLib -lDxUseCLib -lDxDrawFunc -ljpeg -lpng -lzlib -ltiff -ltheora_static -lvorbis_static -lvorbisfile_static -logg_static -lbulletdynamics -lbulletcollision -lbulletmath  
+INCS =  -I"C:/Dev-Cpp/include"  -I"include" 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include"  -I"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用"  -I"include" 
+BIN  = game3.exe
+CXXFLAGS = $(CXXINCS) -DDX_GCC_COMPILE -DDX_NON_INLINE_ASM  
+CFLAGS = $(INCS)  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before game3.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "game3.exe" $(LIBS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+source/Video.o: source/Video.cpp
+	$(CPP) -c source/Video.cpp -o source/Video.o $(CXXFLAGS)
