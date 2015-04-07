@@ -8,7 +8,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
 	Video::setup();
 
     int x = 0;
-	Video::tiledBgFromFile(Video::BG_1, "pumpkin064.png");
+	Video::tiledBgFromFile(Video::BG_1, "dirt2.jpg");
+	Video::setBgScrollDirection(Video::BG_1, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
+    Video::tiledBgFromFile(Video::BG_2, "Sprite-Logo.png");
+	Video::setBgScrollDirection(Video::BG_2, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
     while (!ProcessMessage() && !CheckHitKey(KEY_INPUT_ESCAPE))
     {
         //•`‰æ‰Â”\‰æ‘œ‚É‘Î‚µ‚Ä‘‚«‚İ

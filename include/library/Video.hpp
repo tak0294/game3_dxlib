@@ -11,11 +11,11 @@ const int BG_LAYER_NUM = 2;
 class Video{
 	public:
 		enum ScrollDirection {
-			DIRECTION_NONE = 0,
-			DIRECTION_VERTICAL = 1,
-			DIRECTION_HORIZONTAL = 2,
-			DIRECTION_RIGHT_DOWN = 3,
-			DIRECTION_LEFT_DOWN = 4,
+			DIRECTION_NONE  = 0,
+			DIRECTION_RIGHT = 1,
+			DIRECTION_LEFT  = 2,
+			DIRECTION_UP    = 4,
+			DIRECTION_DOWN  = 8,
 		};
 		enum BgLayer {
 			BG_1 = 0, 
@@ -41,22 +41,29 @@ class Video{
 		};
 	      
 	private:
+		static int m_bgScrollSpeed[BG_LAYER_NUM];
+		static VECTOR m_bgPosition[BG_LAYER_NUM];
+		static VECTOR m_bgSize[BG_LAYER_NUM];
 		static int m_width;
 		static int m_height;
 		static int m_bgScreens[BG_LAYER_NUM];
+		static VECTOR m_bgScreenSizes[BG_LAYER_NUM];
 		static int m_shaderHandle;
-		static VERTEX2DSHADER m_bgVertex[4];
+		static VERTEX2DSHADER m_bgVertex[BG_LAYER_NUM][4];
 		static void setupPixelShaders();
+		static int m_bgScrollDirection[BG_LAYER_NUM];
 	
 	public:
 		static void setup();
 		static void initialize(int w, int h);
-		static void setupBgScreens();
+		static void scrollBG();
 		static void drawBG();
 		static void drawSpriteToBg(int spriteHandle);
   		static void drawSpriteToBg(int spriteHandle, int x, int y);
 		static void clearBG();  		
   		static void tiledBgFromFile(BgLayer layer, std::string image_filename);
+  		static void makeBgVertex(BgLayer layer, int w, int h);
+  		static void setBgScrollDirection(BgLayer layer, int direct);
       
 };
 

@@ -5,12 +5,16 @@
 /**
  * Declare real symbols.
  */
+VECTOR Video::m_bgPosition[BG_LAYER_NUM];
+VECTOR Video::m_bgSize[BG_LAYER_NUM];
+VECTOR Video::m_bgScreenSizes[BG_LAYER_NUM];
 int Video::m_width;
 int Video::m_height;
 int Video::m_bgScreens[BG_LAYER_NUM];
 int Video::m_shaderHandle;
-VERTEX2DSHADER Video::m_bgVertex[4];
-
+int Video::m_bgScrollSpeed[BG_LAYER_NUM];
+VERTEX2DSHADER Video::m_bgVertex[BG_LAYER_NUM][4];
+int Video::m_bgScrollDirection[BG_LAYER_NUM];
 
 /**
  * initialize.
@@ -18,16 +22,12 @@ VERTEX2DSHADER Video::m_bgVertex[4];
 void Video::initialize(int w, int h) {
 	m_width = w;
 	m_height = h;
-	 //é ‚ç‚¹ã®è¨­å®š
-    for (int i = 0; i < 4; i++)
-    {
-        m_bgVertex[i].pos = VGet((i%2)*(float)m_width, (i/2)*(float)m_height, 0);
-        m_bgVertex[i].rhw = 1.0f;
-        m_bgVertex[i].dif = GetColorU8(255, 255, 255, 255);
-        m_bgVertex[i].spc = GetColorU8(0, 0, 0, 0);
-        m_bgVertex[i].u = m_bgVertex[i].su = (float)(i%2);
-        m_bgVertex[i].v = m_bgVertex[i].sv = (float)(i/2);
-    }
+	
+	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
+		m_bgScreens[layer] = -1;
+		m_bgScrollSpeed[layer] = 1;
+	}
+	m_bgScrollSpeed[1] = 2;
 }
 
 void Video::setupPixelShaders() {
@@ -42,35 +42,70 @@ void Video::setup() {
     SetGraphMode(m_width, m_height, 32);
     DxLib_Init();
     SetDrawScreen(DX_SCREEN_BACK);
-	setupBgScreens();
+//	setupBgScreens();
 	setupPixelShaders();
 
 }
 
+void Video::scrollBG() {
+	
+	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
+		for(int ii=0;ii<m_bgScrollSpeed[layer];ii++) {
 
-void Video::setupBgScreens() {
-	for(int ii=0;ii<BG_LAYER_NUM;ii++) {
-		m_bgScreens[ii] = MakeScreen(m_width, m_height, TRUE);
+			if(m_bgScrollDirection[layer] & Video::DIRECTION_LEFT) {
+				m_bgPosition[layer].x -= 1;
+			}
+			if(m_bgScrollDirection[layer] & Video::DIRECTION_RIGHT) {
+				m_bgPosition[layer].x += 1;
+			}
+			if(m_bgScrollDirection[layer] & Video::DIRECTION_UP) {
+				m_bgPosition[layer].y -= 1;
+			}
+			if(m_bgScrollDirection[layer] & Video::DIRECTION_DOWN) {
+				m_bgPosition[layer].y += 1;
+			}
+
+	
+		    m_bgVertex[layer][0].pos.x = m_bgPosition[layer].x;
+		    m_bgVertex[layer][1].pos.x = m_bgPosition[layer].x + m_bgScreenSizes[layer].x;
+		    m_bgVertex[layer][2].pos.x = m_bgPosition[layer].x;
+		    m_bgVertex[layer][3].pos.x = m_bgPosition[layer].x + m_bgScreenSizes[layer].x;
+		    
+		    m_bgVertex[layer][0].pos.y = m_bgPosition[layer].y;
+		    m_bgVertex[layer][1].pos.y = m_bgPosition[layer].y;
+		    m_bgVertex[layer][2].pos.y = m_bgPosition[layer].y + m_bgScreenSizes[layer].y;
+		    m_bgVertex[layer][3].pos.y = m_bgPosition[layer].y + m_bgScreenSizes[layer].y;
+		    
+		    
+		    if(m_bgPosition[layer].x < m_bgSize[layer].x * -2 || 
+			   m_bgPosition[layer].x > 0){
+		    	m_bgPosition[layer].x = -m_bgSize[layer].x;
+			}
+			
+			if(m_bgPosition[layer].y < m_bgSize[layer].y * -2 || 
+			   m_bgPosition[layer].y > 0){
+		    	m_bgPosition[layer].y = -m_bgSize[layer].y;
+			}
+		}
 	}
+	
 }
 
 void Video::drawBG() {
-    //æç”»å¯¾è±¡ã‚’ãƒãƒƒã‚¯ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã«æˆ»ã—ã¦ã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½¿ã£ã¦æç”»
+	
+	scrollBG();
+	
+    //•`‰æ‘ÎÛ‚ğƒoƒbƒNƒXƒNƒŠ[ƒ“‚É–ß‚µ‚ÄƒVƒF[ƒ_‚ğg‚Á‚Ä•`‰æ
     SetDrawScreen(DX_SCREEN_BACK);
-    
-    for(int ii=0;ii<4;ii++) {
-    	m_bgVertex[ii].pos.x -= 1;
-    	if(m_bgVertex[ii].pos.x < 64) {
-    		m_bgVertex[ii].pos.x = 64;
-		}
-	}
-    
+	    
     for(int ii=0;ii<BG_LAYER_NUM;ii++) {
-	    //ã‚·ã‚§ãƒ¼ãƒ€ã§ä½¿ã†ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¯å…ˆã»ã©ä½œã£ãŸæç”»å¯èƒ½ç”»åƒ
+    	if(m_bgScreens[ii] == -1)	continue;
+    	
+	    //ƒVƒF[ƒ_‚Åg‚¤ƒeƒNƒXƒ`ƒƒ‚Íæ‚Ù‚Çì‚Á‚½•`‰æ‰Â”\‰æ‘œ
 	    SetUseTextureToShader(0, m_bgScreens[ii]);
-	    //ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã®ã‚»ãƒƒãƒˆ
+	    //ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚ÌƒZƒbƒg
 	    SetUsePixelShader(m_shaderHandle);
-	    DrawPrimitive2DToShader(m_bgVertex, 4, DX_PRIMTYPE_TRIANGLESTRIP);    	
+	    DrawPrimitive2DToShader(m_bgVertex[ii], 4, DX_PRIMTYPE_TRIANGLESTRIP);    	
 	}
     ScreenFlip();
     ClearDrawScreen();
@@ -95,18 +130,50 @@ void Video::clearBG() {
 	}
 }
 
+void Video::makeBgVertex(BgLayer layer, int w, int h) {
+	 //’¸“_‚Ìİ’è
+    for (int i = 0; i < 4; i++)
+    {
+        m_bgVertex[layer][i].pos = VGet((i%2)*w, (i/2)*h, 0);
+        m_bgVertex[layer][i].rhw = 1.0f;
+        m_bgVertex[layer][i].dif = GetColorU8(255, 255, 255, 255);
+        m_bgVertex[layer][i].spc = GetColorU8(0, 0, 0, 0);
+        m_bgVertex[layer][i].u = m_bgVertex[layer][i].su = (float)(i%2);
+        m_bgVertex[layer][i].v = m_bgVertex[layer][i].sv = (float)(i/2);
+    }
+
+}
+
+
 void Video::tiledBgFromFile(BgLayer layer, std::string image_filename) {
 	int g_handle = LoadGraph(image_filename.c_str());
 	int sp_w, sp_h;
 	GetGraphSize(g_handle, &sp_w, &sp_h);
+	m_bgSize[layer].x = sp_w;
+	m_bgSize[layer].y = sp_h;
+	
+	int scr_w = m_width + sp_w*2;
+	int scr_h = m_height + sp_h*2;
+	m_bgScreenSizes[layer].x = scr_w;
+	m_bgScreenSizes[layer].y = scr_h;
+
+	m_bgScreens[layer] = MakeScreen(scr_w, scr_h, TRUE);	
 	SetDrawScreen(m_bgScreens[layer]);
-	for(int ii=0;ii<m_height;ii+=sp_h) {
-		for(int jj=0;jj<m_width;jj+=sp_w) {
+	makeBgVertex(layer, scr_w, scr_h);
+	for(int ii=0;ii<scr_h;ii+=sp_h) {
+		for(int jj=0;jj<scr_w;jj+=sp_w) {
 			DrawGraph(jj,ii,g_handle, TRUE);	
 		}
 	}
+	
+	// ”wŒi‚Ì‰ŠúˆÊ’u‚ğİ’è‚·‚é. 
+	m_bgPosition[layer].x = -sp_w;
+	m_bgPosition[layer].y = -sp_h;
+	
 }
 
 
-
+void Video::setBgScrollDirection(BgLayer layer, int direct) {
+	m_bgScrollDirection[layer] = direct;
+}
 
