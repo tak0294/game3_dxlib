@@ -18,10 +18,10 @@ VERTEX2DSHADER Video::m_bgVertex[4];
 void Video::initialize(int w, int h) {
 	m_width = w;
 	m_height = h;
-	 //’¸“_‚Ìİ’è
+	 //é ‚ç‚¹ã®è¨­å®š
     for (int i = 0; i < 4; i++)
     {
-        m_bgVertex[i].pos = VGet((i%2)*m_width, (i/2)*m_height, 0);
+        m_bgVertex[i].pos = VGet((i%2)*(float)m_width, (i/2)*(float)m_height, 0);
         m_bgVertex[i].rhw = 1.0f;
         m_bgVertex[i].dif = GetColorU8(255, 255, 255, 255);
         m_bgVertex[i].spc = GetColorU8(0, 0, 0, 0);
@@ -55,13 +55,20 @@ void Video::setupBgScreens() {
 }
 
 void Video::drawBG() {
-    //•`‰æ‘ÎÛ‚ğƒoƒbƒNƒXƒNƒŠ[ƒ“‚É–ß‚µ‚ÄƒVƒF[ƒ_‚ğg‚Á‚Ä•`‰æ
+    //æç”»å¯¾è±¡ã‚’ãƒãƒƒã‚¯ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã«æˆ»ã—ã¦ã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½¿ã£ã¦æç”»
     SetDrawScreen(DX_SCREEN_BACK);
     
+    for(int ii=0;ii<4;ii++) {
+    	m_bgVertex[ii].pos.x -= 1;
+    	if(m_bgVertex[ii].pos.x < 64) {
+    		m_bgVertex[ii].pos.x = 64;
+		}
+	}
+    
     for(int ii=0;ii<BG_LAYER_NUM;ii++) {
-	    //ƒVƒF[ƒ_‚Åg‚¤ƒeƒNƒXƒ`ƒƒ‚Íæ‚Ù‚Çì‚Á‚½•`‰æ‰Â”\‰æ‘œ
+	    //ã‚·ã‚§ãƒ¼ãƒ€ã§ä½¿ã†ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¯å…ˆã»ã©ä½œã£ãŸæç”»å¯èƒ½ç”»åƒ
 	    SetUseTextureToShader(0, m_bgScreens[ii]);
-	    //ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚ÌƒZƒbƒg
+	    //ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã®ã‚»ãƒƒãƒˆ
 	    SetUsePixelShader(m_shaderHandle);
 	    DrawPrimitive2DToShader(m_bgVertex, 4, DX_PRIMTYPE_TRIANGLESTRIP);    	
 	}
