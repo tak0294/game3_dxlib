@@ -2,8 +2,8 @@
 FileName=game3.dev
 Name=game3
 UnitCount=3
-Type=0
-Ver=2
+Type=1
+Ver=1
 ObjFiles=
 Includes=include
 Libs=

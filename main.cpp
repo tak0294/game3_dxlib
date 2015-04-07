@@ -15,6 +15,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
 		//Video::drawSpriteToBg(test, x, 0);
 		Video::drawBG();
 		x+=2;
+		
+		
 //		Video::clearBG();
     }
 
