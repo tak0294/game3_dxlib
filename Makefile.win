@@ -4,11 +4,11 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o source/library/Video.o
-LINKOBJ  = main.o source/library/Video.o
-LIBS     = -L"C:/Program Files/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -static-libgcc -mwindows -lDxLib -lDxUseCLib -lDxDrawFunc -ljpeg -lpng -lzlib -ltiff -ltheora_static -lvorbis_static -lvorbisfile_static -logg_static -lbulletdynamics -lbulletcollision -lbulletmath -m32
-INCS     = -I"C:/Program Files/Dev-Cpp/MinGW64/include" -I"C:/Program Files/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"include"
-CXXINCS  = -I"C:/Program Files/Dev-Cpp/MinGW64/include" -I"C:/Program Files/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Program Files/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++" -I"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -I"include"
+OBJ      = main.o source/library/Video.o source/library/Mover.o
+LINKOBJ  = main.o source/library/Video.o source/library/Mover.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -static-libgcc -mwindows -lDxLib -lDxUseCLib -lDxDrawFunc -ljpeg -lpng -lzlib -ltiff -ltheora_static -lvorbis_static -lvorbisfile_static -logg_static -lbulletdynamics -lbulletcollision -lbulletmath -lgdi32 -m32
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++" -I"C:/DxLib_GCC/プロジェクトに追加すべきファイル_GCC(Dev-cpp)用" -I"include"
 BIN      = game3.exe
 CXXFLAGS = $(CXXINCS) -m32 -DDX_GCC_COMPILE -DDX_NON_INLINE_ASM
 CFLAGS   = $(INCS) -m32
@@ -29,3 +29,6 @@ main.o: main.cpp
 
 source/library/Video.o: source/library/Video.cpp
 	$(CPP) -c source/library/Video.cpp -o source/library/Video.o $(CXXFLAGS)
+
+source/library/Mover.o: source/library/Mover.cpp
+	$(CPP) -c source/library/Mover.cpp -o source/library/Mover.o $(CXXFLAGS)

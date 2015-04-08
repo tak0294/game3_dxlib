@@ -1,11 +1,17 @@
 #include <DxLib.h>
 #include "library/Video.hpp"
+#include "library/Mover.hpp"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
     , LPSTR lpCmdLine, int nShowCmd)
 {
     Video::initialize(640, 480);
 	Video::setup();
+
+	Mover *mover = new Mover();
+	mover->setTexture("pumpkin064.png");
+	mover->pos.x = 100;
+	mover->pos.y = 100;
 
     int x = 0;
 	Video::tiledBgFromFile(Video::BG_1, "dirt2.jpg");
@@ -16,7 +22,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
     {
         //•`‰æ‰Â”\‰æ‘œ‚É‘Î‚µ‚Ä‘‚«ž‚Ý
 		//Video::drawSpriteToBg(test, x, 0);
-		Video::drawBG();
+		mover->draw();
+		Video::drawBGLayer();
+		Video::drawSpriteLayer();
+		Video::finishDrawLayer();
 		x+=2;
 		
 		

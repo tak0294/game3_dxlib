@@ -4,6 +4,7 @@
 #include <string>
 #include <DxLib.h>
 const int BG_LAYER_NUM = 2;
+const int SPRITE_LAYER_NUM = 2;
 
 /****************************************************
  * Video class.
@@ -46,24 +47,31 @@ class Video{
 		static VECTOR m_bgSize[BG_LAYER_NUM];
 		static int m_width;
 		static int m_height;
-		static int m_bgScreens[BG_LAYER_NUM];
-		static VECTOR m_bgScreenSizes[BG_LAYER_NUM];
+		static int m_bgLayers[BG_LAYER_NUM];
+		static int m_spriteLayers[SPRITE_LAYER_NUM];
+		static VECTOR m_bgLayersizes[BG_LAYER_NUM];
 		static int m_shaderHandle;
 		static VERTEX2DSHADER m_bgVertex[BG_LAYER_NUM][4];
+		static VERTEX2DSHADER m_spriteVertex[SPRITE_LAYER_NUM][4];
 		static void setupPixelShaders();
 		static int m_bgScrollDirection[BG_LAYER_NUM];
+		static void makeBgVertex(int layer, int w, int h);
+  		static void makeSpriteVertex(int layer, int w, int h);
+  		
 	
 	public:
 		static void setup();
 		static void initialize(int w, int h);
 		static void scrollBG();
-		static void drawBG();
+		static void drawBGLayer();
+		static void drawSpriteLayer();
+		static void finishDrawLayer();
 		static void drawSpriteToBg(int spriteHandle);
   		static void drawSpriteToBg(int spriteHandle, int x, int y);
 		static void clearBG();  		
   		static void tiledBgFromFile(BgLayer layer, std::string image_filename);
-  		static void makeBgVertex(BgLayer layer, int w, int h);
   		static void setBgScrollDirection(BgLayer layer, int direct);
+  		static void drawSprite(SpriteLayer layer, int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TurnFlag);
       
 };
 
