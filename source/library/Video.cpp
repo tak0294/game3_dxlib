@@ -28,9 +28,8 @@ void Video::setupLayers() {
 	 */
 	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
 		m_bgLayers[layer] = -1;
-		m_bgScrollSpeed[layer] = 1;
+		m_bgScrollSpeed[layer] = 0;
 	}
-	m_bgScrollSpeed[1] = 2;
 	
 	/**
 	 * Initialize Sprite Layers.

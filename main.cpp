@@ -58,6 +58,7 @@ void TestScene::setup() {
 	mover2->setTexture("pumpkin064.png");
 	mover2->pos.y = 250;
 	mover2->scale.x = mover2->scale.y = 1.5f;
+	mover2->drawLayer = Video::SP_2;
 
 	///////////////////////////////////////////////////////
 	//	ParticleSystem setup.
