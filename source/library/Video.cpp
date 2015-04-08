@@ -21,11 +21,8 @@ int Video::m_bgScrollDirection[BG_LAYER_NUM];
 /**
  * initialize.
  */
-void Video::initialize(int w, int h) {
-	m_width = w;
-	m_height = h;
-	
-	
+void Video::setupLayers() {
+
 	/**
 	 * Initialize BG Layers.
 	 */
@@ -33,7 +30,7 @@ void Video::initialize(int w, int h) {
 		m_bgLayers[layer] = -1;
 		m_bgScrollSpeed[layer] = 1;
 	}
-	m_bgScrollSpeed[1] = 0;
+	m_bgScrollSpeed[1] = 2;
 	
 	/**
 	 * Initialize Sprite Layers.
@@ -51,13 +48,19 @@ void Video::setupPixelShaders() {
 /**
  * set up Videos
  */
-void Video::setup() {
+void Video::initialize(int w, int h) {
+
+	m_width = w;
+	m_height = h;
+
     ChangeWindowMode(TRUE);
     SetGraphMode(m_width, m_height, 32);
     DxLib_Init();
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
     SetDrawScreen(DX_SCREEN_BACK);
 //	setupBgScreens();
 	setupPixelShaders();
+	setupLayers();
 
 }
 
@@ -145,16 +148,6 @@ void Video::finishDrawLayer() {
     ClearDrawScreen();
 }
 
-void Video::drawSpriteToBg(int spriteHandle) {
-	drawSpriteToBg(spriteHandle, 0, 0);
-}
-
-void Video::drawSpriteToBg(int spriteHandle, int x, int y) {
-	SetDrawScreen(m_bgLayers[0]);
-    ClearDrawScreen();
-    DrawGraph(x, y, spriteHandle, TRUE);
-
-}
 
 void Video::clearSpriteLayer() {
 	for(int layer=0;layer<SPRITE_LAYER_NUM;layer++) {
@@ -212,6 +205,7 @@ void Video::tiledBgFromFile(BgLayer layer, std::string image_filename) {
 	m_bgLayersizes[layer].y = scr_h;
 
 	m_bgLayers[layer] = MakeScreen(scr_w, scr_h, TRUE);	
+//	printf("m_bgLayer:%d\n", &m_bgLayers[layer]);
 	SetDrawScreen(m_bgLayers[layer]);
 	makeBgVertex(layer, scr_w, scr_h);
 	for(int ii=0;ii<scr_h;ii+=sp_h) {

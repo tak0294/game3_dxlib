@@ -42,6 +42,7 @@ class Video{
 		};
 	      
 	private:
+		static void setupLayers();
 		static int m_bgScrollSpeed[BG_LAYER_NUM];
 		static VECTOR m_bgPosition[BG_LAYER_NUM];
 		static VECTOR m_bgSize[BG_LAYER_NUM];
@@ -60,14 +61,11 @@ class Video{
   		
 	
 	public:
-		static void setup();
 		static void initialize(int w, int h);
 		static void scrollBG();
 		static void drawBGLayer();
 		static void drawSpriteLayer();
 		static void finishDrawLayer();
-		static void drawSpriteToBg(int spriteHandle);
-  		static void drawSpriteToBg(int spriteHandle, int x, int y);
 		static void clearBG();
 		static void clearSpriteLayer();
   		static void tiledBgFromFile(BgLayer layer, std::string image_filename);
