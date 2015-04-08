@@ -104,8 +104,7 @@ void Video::scrollBG() {
 		    	m_bgPosition[layer].y = -m_bgSize[layer].y;
 			}
 		}
-	}
-	
+	}	
 }
 
 void Video::drawBGLayer() {
@@ -156,7 +155,7 @@ void Video::clearSpriteLayer() {
 	}
 }
 
-void Video::clearBG() {
+void Video::clearBGLayer() {
 	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
 		SetDrawScreen(m_bgLayers[layer]);
 		ClearDrawScreen();
@@ -188,7 +187,6 @@ void Video::makeSpriteVertex(int layer, int w, int h) {
         m_spriteVertex[layer][i].u = m_spriteVertex[layer][i].su = (float)(i%2);
         m_spriteVertex[layer][i].v = m_spriteVertex[layer][i].sv = (float)(i/2);
     }
-
 }
 
 
@@ -204,8 +202,8 @@ void Video::tiledBgFromFile(BgLayer layer, std::string image_filename) {
 	m_bgLayersizes[layer].x = scr_w;
 	m_bgLayersizes[layer].y = scr_h;
 
-	m_bgLayers[layer] = MakeScreen(scr_w, scr_h, TRUE);	
-//	printf("m_bgLayer:%d\n", &m_bgLayers[layer]);
+	m_bgLayers[layer] = MakeScreen(scr_w, scr_h, TRUE);
+
 	SetDrawScreen(m_bgLayers[layer]);
 	makeBgVertex(layer, scr_w, scr_h);
 	for(int ii=0;ii<scr_h;ii+=sp_h) {
