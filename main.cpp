@@ -18,13 +18,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
 	Video::setBgScrollDirection(Video::BG_1, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
     Video::tiledBgFromFile(Video::BG_2, "Sprite-Logo.png");
 	Video::setBgScrollDirection(Video::BG_2, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
+	
     while (!ProcessMessage() && !CheckHitKey(KEY_INPUT_ESCAPE))
     {
+    	Video::clearSpriteLayer();
         //•`‰æ‰Â”\‰æ‘œ‚É‘Î‚µ‚Ä‘‚«ž‚Ý
 		//Video::drawSpriteToBg(test, x, 0);
 		mover->draw();
-		Video::drawBGLayer();
 		Video::drawSpriteLayer();
+		Video::drawBGLayer();
 		Video::finishDrawLayer();
 		x+=2;
 		

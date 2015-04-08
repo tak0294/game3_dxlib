@@ -68,7 +68,8 @@ class Video{
 		static void finishDrawLayer();
 		static void drawSpriteToBg(int spriteHandle);
   		static void drawSpriteToBg(int spriteHandle, int x, int y);
-		static void clearBG();  		
+		static void clearBG();
+		static void clearSpriteLayer();
   		static void tiledBgFromFile(BgLayer layer, std::string image_filename);
   		static void setBgScrollDirection(BgLayer layer, int direct);
   		static void drawSprite(SpriteLayer layer, int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TurnFlag);

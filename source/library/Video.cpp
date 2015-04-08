@@ -33,7 +33,7 @@ void Video::initialize(int w, int h) {
 		m_bgLayers[layer] = -1;
 		m_bgScrollSpeed[layer] = 1;
 	}
-	m_bgScrollSpeed[1] = 2;
+	m_bgScrollSpeed[1] = 0;
 	
 	/**
 	 * Initialize Sprite Layers.
@@ -140,6 +140,7 @@ void Video::drawSpriteLayer() {
 }
 
 void Video::finishDrawLayer() {
+	SetDrawScreen(DX_SCREEN_BACK);
     ScreenFlip();
     ClearDrawScreen();
 }
@@ -153,6 +154,13 @@ void Video::drawSpriteToBg(int spriteHandle, int x, int y) {
     ClearDrawScreen();
     DrawGraph(x, y, spriteHandle, TRUE);
 
+}
+
+void Video::clearSpriteLayer() {
+	for(int layer=0;layer<SPRITE_LAYER_NUM;layer++) {
+		SetDrawScreen(m_spriteLayers[layer]);
+		ClearDrawScreen();
+	}
 }
 
 void Video::clearBG() {

@@ -6,7 +6,7 @@ Mover::Mover() {
 	this->vel = VGet(0, 0, 0);
 	this->scale = VGet(1.0f, 1.0f, 1.0f);
 	this->rotation = .0f;
-	this->drawLayer = Video::SP_1;
+	this->drawLayer = Video::SP_2;
 }
 
 void Mover::setTexture(std::string texture_filename) {
@@ -24,6 +24,7 @@ void Mover::draw() {
 //	this->m_sprite.setScale(this->scale.x, this->scale.y);
 //	Video::drawSprite(drawLayer, m_sprite);
 	//window.draw(this->m_sprite);
+	this->rotation += 0.1f;
 	Video::drawSprite(this->drawLayer, this->pos.x, this->pos.y, this->m_textureSize.x/2, this->m_textureSize.y/2, this->scale.x, this->scale.y, this->rotation, this->m_texture, FALSE);
 }
 
