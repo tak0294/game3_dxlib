@@ -33,7 +33,7 @@ public:
 	void setColor(int cl);
 	void update();
 	void draw();
-	void initialize(int x, int y);
+	void initialize(int x, int y, int size, float gravity, float friction, int maxSpeedX, int maxSpeedY, int lifeTime);
 
 };
 

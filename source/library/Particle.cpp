@@ -21,20 +21,17 @@ Particle::Particle(ParticleType particleType) {
 ///////////////////////////////////////////////////
 // Particleセットアップ.
 ///////////////////////////////////////////////////
-void Particle::initialize(int x, int y) {
-	m_gravity = 0.1f;
-	m_friction = 0.998f;
-	float size = rand()%50 + 2;
+void Particle::initialize(int x, int y, int size, float gravity, float friction, int maxSpeedX, int maxSpeedY, int lifeTime) {
+	m_gravity = gravity;
+	m_friction = friction;
 	m_size.x = size;
 	m_size.y = size;
-//	m_shape.setSize(sf::Vector2f(size, size));
-	//m_shape.setPosition(400, 400);
 	pos.x = x;
 	pos.y = y;
-	vel.y = (rand()%100-50) * 0.1f;
-	vel.x = (rand()%100-50) * 0.1f;
+	vel.y = (rand()%maxSpeedX-maxSpeedX/2) * 0.1f;
+	vel.x = (rand()%maxSpeedY-maxSpeedY/2) * 0.1f;
 	isActive = true;
-	m_lifeTime = 30 + (rand() % 50);
+	m_lifeTime = 30 + (rand() % lifeTime);
 	m_angle = .0f;
 	m_rotateSpeed = (rand()%10-5) / 20.0f;
 }
@@ -72,8 +69,6 @@ void Particle::draw() {
 			Video::drawSprite(Video::SP_2, pos.x, pos.y, m_spriteSize.x/2, m_spriteSize.y/2, m_size.x/m_spriteSize.x, m_size.y/m_spriteSize.y, m_angle, m_sprite, FALSE);
 		}
 	}
-	
-
 }
 
 ///////////////////////////////////////////////////

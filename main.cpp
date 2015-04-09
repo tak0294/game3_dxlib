@@ -69,8 +69,11 @@ void TestScene::setup() {
 	//	ParticleSystem setup.
 	///////////////////////////////////////////////////////
 	psys = new ParticleSystem();
-	psys->initialize(graph);
+	psys->initialize();
 	psys->setMakeAtOnceNum(3);
+	psys->setMaxSize(40);
+	psys->setGravity(0);
+	psys->setFriction(0.95f);
 	psys->addColor(GetColor(255, 0, 0));
 	psys->addColor(GetColor(255, 255, 0));
 	psys->addColor(GetColor(255, 0, 255));
@@ -88,7 +91,6 @@ void TestScene::update() {
 		mover2->pos.x += 4.0f;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
-
 	if(InputSystem::isLeft) {
 		mover2->pos.x -= 4.0f;
 		psys->add(mover2->pos.x, mover2->pos.y);
@@ -104,7 +106,7 @@ void TestScene::update() {
 	}
 
 	if(InputSystem::isA) {
-		mover2->scale.x = mover2->scale.y = 7;
+		//mover2->scale.x = mover2->scale.y = 7;
 //		Video::clearBg(Video::BG_1);
 	}
 	psys->update();

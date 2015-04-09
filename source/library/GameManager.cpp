@@ -8,6 +8,8 @@ GameManager::GameManager(int screen_w, int screen_h) {
 
 void GameManager::start() {
 
+	int frame = 0;
+
 	while (!ProcessMessage())
     {
     	Video::clearSpriteLayer();
@@ -27,6 +29,8 @@ void GameManager::start() {
 		Video::drawSpriteLayer();
 		Video::finishDrawLayer();
 		Video::clearSpriteLayer();
+		
+		frame++;
     }
 }
 
