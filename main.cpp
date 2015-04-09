@@ -50,8 +50,11 @@ void TestScene::setup() {
 	//	BG Layers.
 	///////////////////////////////////////////////////////
 	Video::tiledBgFromFile(Video::BG_1, "dirt2.jpg");
+	Video::setBgScrollSpeed(Video::BG_1, 1);
 	Video::setBgScrollDirection(Video::BG_1, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
+	
     Video::tiledBgFromFile(Video::BG_2, "Sprite-Logo.png");
+    Video::setBgScrollSpeed(Video::BG_2, 2);
 	Video::setBgScrollDirection(Video::BG_2, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
 	
 	mover2 = new TestPumpkin();
@@ -60,10 +63,14 @@ void TestScene::setup() {
 	mover2->scale.x = mover2->scale.y = 1.5f;
 	mover2->drawLayer = Video::SP_2;
 
+	int graph = LoadGraph("pumpkin064.png");
+
 	///////////////////////////////////////////////////////
 	//	ParticleSystem setup.
 	///////////////////////////////////////////////////////
 	psys = new ParticleSystem();
+	psys->initialize(graph);
+	psys->setMakeAtOnceNum(3);
 	psys->addColor(GetColor(255, 0, 0));
 	psys->addColor(GetColor(255, 255, 0));
 	psys->addColor(GetColor(255, 0, 255));

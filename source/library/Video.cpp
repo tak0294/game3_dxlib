@@ -63,6 +63,10 @@ void Video::initialize(int w, int h) {
 
 }
 
+void Video::setBgScrollSpeed(BgLayer layer, int speed) {
+	m_bgScrollSpeed[layer] = speed;
+} 
+
 void Video::scrollBG() {
 	
 	for(int layer=0;layer<BG_LAYER_NUM;layer++) {

@@ -12,6 +12,10 @@ class Particle : public Mover {
 	float m_friction;
 	int m_lifeTime;
 	int m_color;
+	int m_sprite;
+	VECTOR m_spriteSize;
+	float m_angle;
+	float m_rotateSpeed;
 
 public:
 	bool isActive;
@@ -24,6 +28,8 @@ public:
 	Particle();
 	Particle(ParticleType particleType);
 
+	void setParticleType(ParticleType particleType);
+	void setSprite(int sprite);
 	void setColor(int cl);
 	void update();
 	void draw();
