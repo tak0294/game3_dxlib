@@ -69,7 +69,7 @@ void TestScene::setup() {
 	//	ParticleSystem setup.
 	///////////////////////////////////////////////////////
 	psys = new ParticleSystem();
-	psys->initialize();
+	psys->initialize(Particle::PARTICLE_CIRCLE);
 	psys->setMakeAtOnceNum(3);
 	psys->setMaxSize(40);
 	psys->setGravity(0);
@@ -81,6 +81,8 @@ void TestScene::setup() {
 }
 
 void TestScene::draw() {
+	Video::drawString(Video::UI_1, 100, 100, "テキスト", GetColor(255,255,255), 16);
+	Video::drawBox(Video::UI_1, 0, 0, 638, 478, GetColor(255,255,255), FALSE);
 	psys->draw();
 	this->mover2->draw();
 //	Video::drawText("TEXT!!", Video::FONT_NORMAL, 200, 400, 100);

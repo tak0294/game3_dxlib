@@ -61,12 +61,12 @@ void Particle::draw() {
 	//m_shape.setFillColor(m_color);
 	//Video::drawSprite(Video::SP_1, m_shape);
 	if(m_particleType == PARTICLE_SQUARE) {
-		DrawBox( pos.x , pos.y , pos.x + m_size.x , pos.y + m_size.y ,m_color , TRUE ) ;
+		Video::drawBox( Video::SP_1, pos.x , pos.y , pos.x + m_size.x , pos.y + m_size.y ,m_color , TRUE ) ;
 	}else if(m_particleType == PARTICLE_CIRCLE) {
-		DrawCircle( pos.x , pos.y , m_size.x ,m_color , TRUE ) ;
+		Video::drawCircle( Video::SP_1, pos.x , pos.y , m_size.x/2 ,m_color , TRUE ) ;
 	}else if(m_particleType == PARTICLE_SPRITE) {
 		if(m_sprite != -1) {
-			Video::drawSprite(Video::SP_2, pos.x, pos.y, m_spriteSize.x/2, m_spriteSize.y/2, m_size.x/m_spriteSize.x, m_size.y/m_spriteSize.y, m_angle, m_sprite, FALSE);
+			Video::drawSprite(Video::SP_1, pos.x, pos.y, m_spriteSize.x/2, m_spriteSize.y/2, m_size.x/m_spriteSize.x, m_size.y/m_spriteSize.y, m_angle, m_sprite, FALSE);
 		}
 	}
 }

@@ -4,7 +4,7 @@
 #include <string>
 #include <DxLib.h>
 const int BG_LAYER_NUM = 2;
-const int SPRITE_LAYER_NUM = 2;
+const int SPRITE_LAYER_NUM = 3;
 
 /****************************************************
  * Video class.
@@ -26,6 +26,7 @@ class Video{
 		enum SpriteLayer {
 			SP_1 = 0, 
 			SP_2 = 1,
+			UI_1 = 2,
 		};
 		enum PixelShader {
 			PS_NONE = 0,
@@ -72,6 +73,10 @@ class Video{
   		static void setBgScrollDirection(BgLayer layer, int direct);
   		static void setBgScrollSpeed(BgLayer layer, int speed);
   		static void drawSprite(SpriteLayer layer, int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TurnFlag);
+  		static void drawBox(SpriteLayer layer, int x1, int y1, int x2, int y2, int Color, int FillFlag);
+  		static void drawCircle(SpriteLayer layer, int x, int y, int r, int Color, int FillFlag);
+  		static void drawString(SpriteLayer layer, int x, int y, char *string, int color);
+  		static void drawString(SpriteLayer layer, int x, int y, char *string, int color, int size);
       
 };
 

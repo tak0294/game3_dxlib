@@ -55,6 +55,7 @@ void Video::initialize(int w, int h) {
     ChangeWindowMode(TRUE);
     SetGraphMode(m_width, m_height, 32);
     DxLib_Init();
+    ChangeFontType(DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
     SetDrawScreen(DX_SCREEN_BACK);
 //	setupBgScreens();
@@ -231,3 +232,25 @@ void Video::drawSprite(SpriteLayer layer, int x, int y, int cx, int cy, double E
 	SetDrawScreen(m_spriteLayers[layer]);
 	DrawRotaGraph3(x, y, cx, cy, ExtRateX, ExtRateY, Angle, GrHandle, TRUE, TurnFlag);
 } 
+
+void Video::drawBox(SpriteLayer layer, int x1, int y1, int x2, int y2, int Color, int FillFlag) {
+	SetDrawScreen(m_spriteLayers[layer]);
+	DrawBox(x1, y1, x2, y2, Color, FillFlag);
+}
+
+void Video::drawCircle(SpriteLayer layer, int x, int y, int r, int Color, int FillFlag) {
+	SetDrawScreen(m_spriteLayers[layer]);
+	DrawCircle(x, y, r, Color, FillFlag);
+}
+
+void Video::drawString(SpriteLayer layer, int x, int y, char *string, int color) {
+	drawString(layer, x, y, string, color, 14);
+}
+
+void Video::drawString(SpriteLayer layer, int x, int y, char *string, int color, int size) {
+	int old_size = GetFontSize();
+	SetFontSize(size);
+	SetDrawScreen(m_spriteLayers[layer]);
+	DrawString(x, y, string, color);
+	SetFontSize(old_size);
+}
