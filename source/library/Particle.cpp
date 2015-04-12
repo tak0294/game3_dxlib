@@ -22,14 +22,23 @@ Particle::Particle(ParticleType particleType) {
 // Particleセットアップ.
 ///////////////////////////////////////////////////
 void Particle::initialize(int x, int y, int size, float gravity, float friction, int maxSpeedX, int maxSpeedY, int lifeTime) {
+		
 	m_gravity = gravity;
 	m_friction = friction;
 	m_size.x = size;
 	m_size.y = size;
 	pos.x = x;
 	pos.y = y;
-	vel.y = (rand()%maxSpeedX-maxSpeedX/2) * 0.1f;
-	vel.x = (rand()%maxSpeedY-maxSpeedY/2) * 0.1f;
+	vel.y = (rand()%maxSpeedX-maxSpeedX/2);
+	vel.x = (rand()%maxSpeedY-maxSpeedY/2);
+//	printfDx("%f, %f", vel.x, vel.y);
+//	vel = VNorm(vel);
+	float vs = VSize(vel);
+	vel.x /= vs;
+	vel.y /= vs;
+	vel.x *= rand()%maxSpeedX;
+	vel.y *= rand()%maxSpeedY;
+	
 	isActive = true;
 	m_lifeTime = 30 + (rand() % lifeTime);
 	m_angle = .0f;

@@ -16,8 +16,8 @@ void ParticleSystem::initializeCommonValues() {
 	m_maxSize = 20;
 	m_gravity = 0.1f;
 	m_friction = 0.988f;
-	m_maxSpeedX = 100;
-	m_maxSpeedY = 100;
+	m_maxSpeedX = 10;
+	m_maxSpeedY = 10;
 	m_lifeTime = 50;
 }
 

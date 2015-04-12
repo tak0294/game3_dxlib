@@ -69,11 +69,11 @@ void TestScene::setup() {
 	//	ParticleSystem setup.
 	///////////////////////////////////////////////////////
 	psys = new ParticleSystem();
-	psys->initialize(Particle::PARTICLE_CIRCLE);
+	psys->initialize(Particle::PARTICLE_SQUARE);
 	psys->setMakeAtOnceNum(3);
 	psys->setMaxSize(40);
-	psys->setGravity(0);
-	psys->setFriction(0.95f);
+	psys->setGravity(0.2f);
+	psys->setFriction(0.98f);
 	psys->addColor(GetColor(255, 0, 0));
 	psys->addColor(GetColor(255, 255, 0));
 	psys->addColor(GetColor(255, 0, 255));

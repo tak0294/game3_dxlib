@@ -34,6 +34,7 @@ public:
 	void draw();
 	void update();
 	void add(int x, int y);
+	void setTexture(int sprite);
 	void setMakeAtOnceNum(int num);
 	void setMinSize(int minSize);
 	void setMaxSize(int maxSize);
