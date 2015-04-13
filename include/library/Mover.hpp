@@ -10,7 +10,8 @@ class Mover {
 	VECTOR m_textureSize;
 
 public:
-	float speed;
+	VECTOR speed;
+	float axcel;
 	float friction;
 	VECTOR pos;
 	VECTOR vel;

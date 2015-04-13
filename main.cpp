@@ -54,9 +54,11 @@ void TestScene::setup() {
 	Video::setBgScrollSpeed(Video::BG_1, 1);
 	Video::setBgScrollDirection(Video::BG_1, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
 	
-    Video::tiledBgFromFile(Video::BG_2, "Sprite-Logo.png");
-    Video::setBgScrollSpeed(Video::BG_2, 2);
-	Video::setBgScrollDirection(Video::BG_2, Video::DIRECTION_RIGHT | Video::DIRECTION_DOWN);
+	Video::drawBox(Video::BG_2, 0, 0, 640, 460, GetColor(200, 200, 200), TRUE);
+	SetTransColor(255, 255, 255);
+	int bg = LoadGraph("bg.png");
+	int bg_div = DerivationGraph(0,0,270,240,bg);
+    Video::bgFromGraph(Video::BG_2, bg_div, 0, 0, 540, 480);
 	
 	mover2 = new TestPumpkin();
 	mover2->setTexture("pumpkin064.png");
@@ -69,16 +71,8 @@ void TestScene::setup() {
 	///////////////////////////////////////////////////////
 	//	ParticleSystem setup.
 	///////////////////////////////////////////////////////
-	psys = new ParticleSystem();
-	psys->initialize(Particle::PARTICLE_SQUARE);
-	psys->setMakeAtOnceNum(3);
-	psys->setMaxSize(40);
-	psys->setGravity(0.2f);
-	psys->setFriction(0.98f);
-	psys->addColor(GetColor(255, 0, 0));
-	psys->addColor(GetColor(255, 255, 0));
-	psys->addColor(GetColor(255, 0, 255));
-	
+	psys = new ParticleSystem(128);
+	psys->initialize();
 }
 
 void TestScene::draw() {
@@ -92,23 +86,19 @@ void TestScene::draw() {
 void TestScene::update() {
 	if(InputSystem::isRight) {
 		mover2->vel.x = 1.0f;
-		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 	if(InputSystem::isLeft) {
 		mover2->vel.x = -1.0f;
-		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 	if(InputSystem::isDown) {
 		mover2->vel.y = 1.0f;
-		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 
 	if(InputSystem::isUp) {
 		mover2->vel.y = -1.0f;
-		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 

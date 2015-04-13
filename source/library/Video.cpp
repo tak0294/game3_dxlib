@@ -10,12 +10,11 @@ VECTOR Video::m_bgSize[BG_LAYER_NUM];
 VECTOR Video::m_bgLayersizes[BG_LAYER_NUM];
 int Video::m_width;
 int Video::m_height;
-int Video::m_bgLayers[BG_LAYER_NUM];
-int Video::m_spriteLayers[SPRITE_LAYER_NUM];
+int Video::m_spriteLayers[SPRITE_LAYER_NUM + BG_LAYER_NUM];
 int Video::m_shaderHandle;
 int Video::m_bgScrollSpeed[BG_LAYER_NUM];
 VERTEX2DSHADER Video::m_bgVertex[BG_LAYER_NUM][4];
-VERTEX2DSHADER Video::m_spriteVertex[SPRITE_LAYER_NUM][4];
+VERTEX2DSHADER Video::m_spriteVertex[SPRITE_LAYER_NUM + BG_LAYER_NUM][4];
 int Video::m_bgScrollDirection[BG_LAYER_NUM];
 
 /**
@@ -26,15 +25,15 @@ void Video::setupLayers() {
 	/**
 	 * Initialize BG Layers.
 	 */
-	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
-		m_bgLayers[layer] = -1;
+	for(int layer=Video::BG_1;layer<Video::BG_1 + BG_LAYER_NUM;layer++) {
+		m_spriteLayers[layer] = -1;
 		m_bgScrollSpeed[layer] = 0;
 	}
 	
 	/**
 	 * Initialize Sprite Layers.
 	 */
-	for(int layer=0;layer<SPRITE_LAYER_NUM;layer++) {
+	for(int layer=Video::SP_1;layer<Video::SP_1 + SPRITE_LAYER_NUM;layer++) {
 		m_spriteLayers[layer] = MakeScreen(m_width, m_height, TRUE);
 		makeSpriteVertex(layer, m_width, m_height);
 	}
@@ -64,13 +63,13 @@ void Video::initialize(int w, int h) {
 
 }
 
-void Video::setBgScrollSpeed(BgLayer layer, int speed) {
+void Video::setBgScrollSpeed(SpriteLayer layer, int speed) {
 	m_bgScrollSpeed[layer] = speed;
 } 
 
 void Video::scrollBG() {
 	
-	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
+	for(int layer=BG_1;layer<BG_1+BG_LAYER_NUM;layer++) {
 		for(int ii=0;ii<m_bgScrollSpeed[layer];ii++) {
 
 			if(m_bgScrollDirection[layer] & Video::DIRECTION_LEFT) {
@@ -87,15 +86,15 @@ void Video::scrollBG() {
 			}
 
 	
-		    m_bgVertex[layer][0].pos.x = m_bgPosition[layer].x;
-		    m_bgVertex[layer][1].pos.x = m_bgPosition[layer].x + m_bgLayersizes[layer].x;
-		    m_bgVertex[layer][2].pos.x = m_bgPosition[layer].x;
-		    m_bgVertex[layer][3].pos.x = m_bgPosition[layer].x + m_bgLayersizes[layer].x;
+		    m_spriteVertex[layer][0].pos.x = m_bgPosition[layer].x;
+		    m_spriteVertex[layer][1].pos.x = m_bgPosition[layer].x + m_bgLayersizes[layer].x;
+		    m_spriteVertex[layer][2].pos.x = m_bgPosition[layer].x;
+		    m_spriteVertex[layer][3].pos.x = m_bgPosition[layer].x + m_bgLayersizes[layer].x;
 		    
-		    m_bgVertex[layer][0].pos.y = m_bgPosition[layer].y;
-		    m_bgVertex[layer][1].pos.y = m_bgPosition[layer].y;
-		    m_bgVertex[layer][2].pos.y = m_bgPosition[layer].y + m_bgLayersizes[layer].y;
-		    m_bgVertex[layer][3].pos.y = m_bgPosition[layer].y + m_bgLayersizes[layer].y;
+		    m_spriteVertex[layer][0].pos.y = m_bgPosition[layer].y;
+		    m_spriteVertex[layer][1].pos.y = m_bgPosition[layer].y;
+		    m_spriteVertex[layer][2].pos.y = m_bgPosition[layer].y + m_bgLayersizes[layer].y;
+		    m_spriteVertex[layer][3].pos.y = m_bgPosition[layer].y + m_bgLayersizes[layer].y;
 		    
 		    
 		    if(m_bgPosition[layer].x < m_bgSize[layer].x * -2 || 
@@ -118,14 +117,14 @@ void Video::drawBGLayer() {
     //描画対象をバックスクリーンに戻してシェーダを使って描画
     SetDrawScreen(DX_SCREEN_BACK);
 	    
-    for(int ii=0;ii<BG_LAYER_NUM;ii++) {
-    	if(m_bgLayers[ii] == -1)	continue;
+    for(int ii=BG_1;ii<BG_1+BG_LAYER_NUM;ii++) {
+    	if(m_spriteLayers[ii] == -1)	continue;
     	
 	    //シェーダで使うテクスチャは先ほど作った描画可能画像
-	    SetUseTextureToShader(0, m_bgLayers[ii]);
+	    SetUseTextureToShader(0, m_spriteLayers[ii]);
 	    //ピクセルシェーダのセット
 	    SetUsePixelShader(m_shaderHandle);
-	    DrawPrimitive2DToShader(m_bgVertex[ii], 4, DX_PRIMTYPE_TRIANGLESTRIP);    	
+	    DrawPrimitive2DToShader(m_spriteVertex[ii], 4, DX_PRIMTYPE_TRIANGLESTRIP);    	
 	}
 }
 
@@ -134,7 +133,7 @@ void Video::drawSpriteLayer() {
 	//描画対象をバックスクリーンに戻してシェーダを使って描画
 	SetDrawScreen(DX_SCREEN_BACK);
 	
-	for(int ii=0;ii<SPRITE_LAYER_NUM;ii++) {
+	for(int ii=SP_1;ii<SP_1+SPRITE_LAYER_NUM;ii++) {
     	if(m_spriteLayers[ii] == -1)	continue;
     	
 	    //シェーダで使うテクスチャは先ほど作った描画可能画像
@@ -153,15 +152,15 @@ void Video::finishDrawLayer() {
 
 
 void Video::clearSpriteLayer() {
-	for(int layer=0;layer<SPRITE_LAYER_NUM;layer++) {
+	for(int layer=SP_1;layer<SP_1+SPRITE_LAYER_NUM;layer++) {
 		SetDrawScreen(m_spriteLayers[layer]);
 		ClearDrawScreen();
 	}
 }
 
 void Video::clearBGLayer() {
-	for(int layer=0;layer<BG_LAYER_NUM;layer++) {
-		SetDrawScreen(m_bgLayers[layer]);
+	for(int layer=BG_1;layer<BG_1+BG_LAYER_NUM;layer++) {
+		SetDrawScreen(m_spriteLayers[layer]);
 		ClearDrawScreen();
 	}
 }
@@ -193,8 +192,56 @@ void Video::makeSpriteVertex(int layer, int w, int h) {
     }
 }
 
+void Video::bgFromFile(SpriteLayer layer, std::string image_filename, int x, int y) {
+	int r,g,b;
+	GetTransColor(&r, &g, &b);
+	SetTransColor(255, 255, 255);
 
-void Video::tiledBgFromFile(BgLayer layer, std::string image_filename) {
+	int g_handle = LoadGraph(image_filename.c_str());
+	int sp_w, sp_h;
+	GetGraphSize(g_handle, &sp_w, &sp_h);
+	
+	m_bgSize[layer].x = sp_w;
+	m_bgSize[layer].y = sp_h;
+	m_spriteLayers[layer] = MakeScreen(sp_w, sp_h, TRUE);
+	SetDrawScreen(m_spriteLayers[layer]);
+	makeSpriteVertex(layer, sp_w, sp_h);
+	DrawGraph(x, y, g_handle,  TRUE);
+	SetTransColor(r,g,b);
+}
+
+void Video::bgFromFile(SpriteLayer layer, std::string image_filename, int x, int y, int w, int h) {
+	int r,g,b;
+	GetTransColor(&r, &g, &b);
+	SetTransColor(255, 255, 255);
+
+	int g_handle = LoadGraph(image_filename.c_str());
+	int sp_w, sp_h;
+	GetGraphSize(g_handle, &sp_w, &sp_h);
+	
+	m_bgSize[layer].x = sp_w;
+	m_bgSize[layer].y = sp_h;
+	m_spriteLayers[layer] = MakeScreen(w, h, TRUE);
+	SetDrawScreen(m_spriteLayers[layer]);
+	makeSpriteVertex(layer, w, h);
+	DrawExtendGraph(x, y, x+w, y+h, g_handle, TRUE);
+	SetTransColor(r,g,b);
+}
+
+void Video::bgFromGraph(SpriteLayer layer, int g_handle, int x, int y, int w, int h) {
+	int sp_w, sp_h;
+	GetGraphSize(g_handle, &sp_w, &sp_h);
+	
+	m_bgSize[layer].x = sp_w;
+	m_bgSize[layer].y = sp_h;
+	m_spriteLayers[layer] = MakeScreen(w, h, TRUE);
+	SetDrawScreen(m_spriteLayers[layer]);
+	makeSpriteVertex(layer, w, h);
+	DrawExtendGraph(x, y, x+w, y+h, g_handle, TRUE);
+}
+
+
+void Video::tiledBgFromFile(SpriteLayer layer, std::string image_filename) {
 	int g_handle = LoadGraph(image_filename.c_str());
 	int sp_w, sp_h;
 	GetGraphSize(g_handle, &sp_w, &sp_h);
@@ -206,10 +253,10 @@ void Video::tiledBgFromFile(BgLayer layer, std::string image_filename) {
 	m_bgLayersizes[layer].x = scr_w;
 	m_bgLayersizes[layer].y = scr_h;
 
-	m_bgLayers[layer] = MakeScreen(scr_w, scr_h, TRUE);
+	m_spriteLayers[layer] = MakeScreen(scr_w, scr_h, TRUE);
 
-	SetDrawScreen(m_bgLayers[layer]);
-	makeBgVertex(layer, scr_w, scr_h);
+	SetDrawScreen(m_spriteLayers[layer]);
+	makeSpriteVertex(layer, scr_w, scr_h);
 	for(int ii=0;ii<scr_h;ii+=sp_h) {
 		for(int jj=0;jj<scr_w;jj+=sp_w) {
 			DrawGraph(jj,ii,g_handle, TRUE);	
@@ -223,7 +270,7 @@ void Video::tiledBgFromFile(BgLayer layer, std::string image_filename) {
 }
 
 
-void Video::setBgScrollDirection(BgLayer layer, int direct) {
+void Video::setBgScrollDirection(SpriteLayer layer, int direct) {
 	m_bgScrollDirection[layer] = direct;
 }
 
