@@ -24,6 +24,7 @@ public:
 };
 
 void TestPumpkin::update() {
+	Mover::update();
 	this->rotation += 0.1f;
 } 
 
@@ -90,20 +91,24 @@ void TestScene::draw() {
 
 void TestScene::update() {
 	if(InputSystem::isRight) {
-		mover2->pos.x += 4.0f;
+		mover2->vel.x = 1.0f;
+		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 	if(InputSystem::isLeft) {
-		mover2->pos.x -= 4.0f;
+		mover2->vel.x = -1.0f;
+		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 	if(InputSystem::isDown) {
-		mover2->pos.y += 4.0f;
+		mover2->vel.y = 1.0f;
+		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 
 	if(InputSystem::isUp) {
-		mover2->pos.y -= 4.0f;
+		mover2->vel.y = -1.0f;
+		mover2->speed = 4;
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 

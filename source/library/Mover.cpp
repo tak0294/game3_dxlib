@@ -4,9 +4,13 @@
 Mover::Mover() {
 	this->pos = VGet(0, 0, 0);
 	this->vel = VGet(0, 0, 0);
+	this->speed = 4;
+	
 	this->scale = VGet(1.0f, 1.0f, 1.0f);
 	this->rotation = .0f;
 	this->drawLayer = Video::SP_2;
+	
+	this->friction = 0.98f;
 }
 
 void Mover::setTexture(std::string texture_filename) {
@@ -22,5 +26,20 @@ void Mover::draw() {
 }
 
 void Mover::update() {
-
+	
+	//velベクトルを単位ベクトル（方角のみ）に変換する. 
+	float vs = VSize(vel);
+	if(vs != 0) {
+		vel.x /= vs;
+		vel.y /= vs;
+	}
+			
+	//単位ベクトルに速度をかける. 
+	vel.x *= speed;
+	vel.y *= speed;
+	
+	//座標を更新する. 
+	pos.x += vel.x;
+	pos.y += vel.y;
+	speed *= friction;
 }
