@@ -33,13 +33,18 @@ void TestScene::setup() {
 	///////////////////////////////////////////////////////
 	psys = new ParticleSystem(128);
 	psys->initialize();
+	
+	task = new Task();
+	task->mover = mover2;
 }
 
 void TestScene::draw() {
 	Video::drawString(Video::UI_1, 100, 100, "テキスト", GetColor(255,255,255), 16);
 	Video::drawBox(Video::UI_1, 0, 0, 638, 478, GetColor(255,255,255), FALSE);
 	psys->draw();
-	this->mover2->draw();
+	task->draw();
+//	this->mover2->draw();
+
 //	Video::drawText("TEXT!!", Video::FONT_NORMAL, 200, 400, 100);
 }
 
@@ -68,6 +73,7 @@ void TestScene::update() {
 //		Video::clearBg(Video::BG_1);
 	}
 	psys->update();
-	mover2->update();
+//	mover2->update();
+	task->update();
 	frame++;
 }

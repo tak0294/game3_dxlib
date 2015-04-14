@@ -10,6 +10,7 @@
  ***************************************************************************************/
 class TestScene : public Scene {
 	TestPumpkin *mover2;
+	Task *task;
 	ParticleSystem *psys;
 public:
 	void setup();
