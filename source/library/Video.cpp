@@ -26,7 +26,8 @@ void Video::setupLayers() {
 	 * Initialize BG Layers.
 	 */
 	for(int layer=Video::BG_1;layer<Video::BG_1 + BG_LAYER_NUM;layer++) {
-		m_spriteLayers[layer] = -1;
+		Video::makeScreen(layer, m_width, m_height);
+		makeSpriteVertex(layer, m_width, m_height);
 		m_bgScrollSpeed[layer] = 0;
 	}
 	
@@ -34,7 +35,7 @@ void Video::setupLayers() {
 	 * Initialize Sprite Layers.
 	 */
 	for(int layer=Video::SP_1;layer<Video::SP_1 + SPRITE_LAYER_NUM;layer++) {
-		m_spriteLayers[layer] = MakeScreen(m_width, m_height, TRUE);
+		Video::makeScreen(layer, m_width, m_height);
 		makeSpriteVertex(layer, m_width, m_height);
 	}
 }
@@ -62,6 +63,23 @@ void Video::initialize(int w, int h) {
 	setupLayers();
 
 }
+
+/**
+ * ƒŒƒCƒ„[‚ð–¾Ž¦“I‚Éì¬,íœ.
+ */
+void Video::makeScreen(int layer, int w, int h) {
+	deleteScreen(layer);
+	m_spriteLayers[layer] = MakeScreen(w, h, TRUE);
+	makeSpriteVertex(layer, w, h);
+}
+
+void Video::deleteScreen(int layer) {
+	if(m_spriteLayers[layer] != -1) {
+		DeleteGraph(m_spriteLayers[layer]);
+		m_spriteLayers[layer] = -1;
+	}
+}
+
 
 void Video::setBgScrollSpeed(SpriteLayer layer, int speed) {
 	m_bgScrollSpeed[layer] = speed;
@@ -203,7 +221,7 @@ void Video::bgFromFile(SpriteLayer layer, std::string image_filename, int x, int
 	
 	m_bgSize[layer].x = sp_w;
 	m_bgSize[layer].y = sp_h;
-	m_spriteLayers[layer] = MakeScreen(sp_w, sp_h, TRUE);
+	Video::makeScreen(layer, sp_w, sp_h);
 	SetDrawScreen(m_spriteLayers[layer]);
 	makeSpriteVertex(layer, sp_w, sp_h);
 	DrawGraph(x, y, g_handle,  TRUE);
@@ -221,7 +239,7 @@ void Video::bgFromFile(SpriteLayer layer, std::string image_filename, int x, int
 	
 	m_bgSize[layer].x = sp_w;
 	m_bgSize[layer].y = sp_h;
-	m_spriteLayers[layer] = MakeScreen(w, h, TRUE);
+	Video::makeScreen(layer, w, h);
 	SetDrawScreen(m_spriteLayers[layer]);
 	makeSpriteVertex(layer, w, h);
 	DrawExtendGraph(x, y, x+w, y+h, g_handle, TRUE);
@@ -234,7 +252,7 @@ void Video::bgFromGraph(SpriteLayer layer, int g_handle, int x, int y, int w, in
 	
 	m_bgSize[layer].x = sp_w;
 	m_bgSize[layer].y = sp_h;
-	m_spriteLayers[layer] = MakeScreen(w, h, TRUE);
+	Video::makeScreen(layer, w, h);
 	SetDrawScreen(m_spriteLayers[layer]);
 	makeSpriteVertex(layer, w, h);
 	DrawExtendGraph(x, y, x+w, y+h, g_handle, TRUE);
@@ -253,7 +271,7 @@ void Video::tiledBgFromFile(SpriteLayer layer, std::string image_filename) {
 	m_bgLayersizes[layer].x = scr_w;
 	m_bgLayersizes[layer].y = scr_h;
 
-	m_spriteLayers[layer] = MakeScreen(scr_w, scr_h, TRUE);
+	Video::makeScreen(layer, scr_w, scr_h);
 
 	SetDrawScreen(m_spriteLayers[layer]);
 	makeSpriteVertex(layer, scr_w, scr_h);
@@ -290,14 +308,14 @@ void Video::drawCircle(SpriteLayer layer, int x, int y, int r, int Color, int Fi
 	DrawCircle(x, y, r, Color, FillFlag);
 }
 
-void Video::drawString(SpriteLayer layer, int x, int y, char *string, int color) {
+void Video::drawString(SpriteLayer layer, int x, int y, std::string string, int color) {
 	drawString(layer, x, y, string, color, 14);
 }
 
-void Video::drawString(SpriteLayer layer, int x, int y, char *string, int color, int size) {
+void Video::drawString(SpriteLayer layer, int x, int y, std::string string, int color, int size) {
 	int old_size = GetFontSize();
 	SetFontSize(size);
 	SetDrawScreen(m_spriteLayers[layer]);
-	DrawString(x, y, string, color);
+	DrawString(x, y, string.c_str(), color);
 	SetFontSize(old_size);
 }

@@ -63,6 +63,8 @@ class Video{
 	public:
 		static void initialize(int w, int h);
 		static void scrollBG();
+		static void makeScreen(int layer, int w, int h);
+		static void deleteScreen(int layer);
 		static void drawBGLayer();
 		static void drawSpriteLayer();
 		static void finishDrawLayer();
@@ -78,8 +80,8 @@ class Video{
   		static void drawSprite(SpriteLayer layer, int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TurnFlag);
   		static void drawBox(SpriteLayer layer, int x1, int y1, int x2, int y2, int Color, int FillFlag);
   		static void drawCircle(SpriteLayer layer, int x, int y, int r, int Color, int FillFlag);
-  		static void drawString(SpriteLayer layer, int x, int y, char *string, int color);
-  		static void drawString(SpriteLayer layer, int x, int y, char *string, int color, int size);
+  		static void drawString(SpriteLayer layer, int x, int y, std::string string, int color);
+  		static void drawString(SpriteLayer layer, int x, int y, std::string string, int color, int size);
       
 };
 
