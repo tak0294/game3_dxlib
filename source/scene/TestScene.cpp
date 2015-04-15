@@ -22,11 +22,18 @@ void TestScene::setup() {
 	int bg_div = DerivationGraph(0,0,270,240,bg);
     Video::bgFromGraph(Video::BG_3, bg_div, 0, 0, 540, 480);
 	
+
+
+	///////////////////////////////////////////////////////
+	//  Make mover object.
+	///////////////////////////////////////////////////////
 	mover2 = new TestPumpkin();
 	mover2->setTexture("pumpkin064.png");
 	mover2->pos.y = 250;
 	mover2->scale.x = mover2->scale.y = 1.5f;
 	mover2->drawLayer = Video::SP_2;
+
+
 
 	///////////////////////////////////////////////////////
 	//	ParticleSystem setup.
@@ -50,25 +57,24 @@ void TestScene::draw() {
 
 void TestScene::update() {
 	if(InputSystem::isRight) {
-		mover2->vel.x = 1.0f;
+		mover2->setAngle(90);
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 	if(InputSystem::isLeft) {
-		mover2->vel.x = -1.0f;
+		mover2->setAngle(270);
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
 	if(InputSystem::isDown) {
-		mover2->vel.y = 1.0f;
+		mover2->setAngle(180);
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
-
 	if(InputSystem::isUp) {
-		mover2->vel.y = -1.0f;
+		mover2->setAngle(0);
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
-
 	if(InputSystem::isA) {
 		psys->add(mover2->pos.x, mover2->pos.y);
+		mover2->addAngle(10);
 		//mover2->scale.x = mover2->scale.y = 7;
 //		Video::clearBg(Video::BG_1);
 	}

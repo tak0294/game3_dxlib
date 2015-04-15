@@ -1,5 +1,6 @@
 #include "library/Mover.hpp"
 #include "library/Video.hpp"
+#include <cmath>
 
 Mover::Mover() {
 	this->pos = VGet(0, 0, 0);
@@ -8,9 +9,17 @@ Mover::Mover() {
 	this->axcel = 2;
 	this->scale = VGet(1.0f, 1.0f, 1.0f);
 	this->rotation = .0f;
-	this->drawLayer = Video::SP_2;
-	
 	this->friction = 0.7f;
+	
+	this->drawLayer = Video::SP_2;	//描画するレイヤー.
+	
+	////////////////////////////////////////
+	// 進行する角度.
+	////////////////////////////////////////
+	this->angle 		= 0;	//実際の角度 
+	this->destAngle 	= 0;	//目的の角度. 
+	this->angleFriction = 0.2;	//角度を変更する度合い. 
+	
 }
 
 void Mover::setTexture(std::string texture_filename) {
@@ -46,3 +55,28 @@ void Mover::update() {
 	speed.x *= friction;
 	speed.y *= friction;
 }
+
+void Mover::updateAngleToVel() {
+	this->angle += (this->destAngle - this->angle) * this->angleFriction;
+	float x = cos(0.01745329251 * (this->angle-90.0));
+	float y = sin(0.01745329251 * (this->angle-90.0));
+	vel.x = x;
+	vel.y = y;
+}
+
+void Mover::setAngle(float angle) {
+	this->destAngle = angle;
+	if(abs(this->destAngle - this->angle) > 180) {
+		this->angle += 360;
+	}
+	// 角度から進行ベクトルを更新. 
+	updateAngleToVel();
+}
+
+void Mover::addAngle(float angle) {
+	this->destAngle += angle;
+	// 角度から進行ベクトルを更新. 
+	updateAngleToVel();
+	
+}
+

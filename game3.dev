@@ -243,7 +243,7 @@ BuildCmd=
 [Unit20]
 FileName=include\library\Task.hpp
 CompileCpp=1
-Folder=
+Folder=include/library
 Compile=1
 Link=1
 Priority=1000
@@ -253,7 +253,7 @@ BuildCmd=
 [Unit21]
 FileName=source\library\Task.cpp
 CompileCpp=1
-Folder=
+Folder=source/library
 Compile=1
 Link=1
 Priority=1000
