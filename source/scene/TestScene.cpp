@@ -72,6 +72,20 @@ void TestScene::update() {
 		mover2->setAngle(0);
 		psys->add(mover2->pos.x, mover2->pos.y);
 	}
+	
+	if(InputSystem::isRight && InputSystem::isUp) {
+		mover2->setAngle(45);
+	}
+	if(InputSystem::isRight && InputSystem::isDown) {
+		mover2->setAngle(135);
+	}
+	if(InputSystem::isLeft && InputSystem::isUp) {
+		mover2->setAngle(315);
+	}
+	if(InputSystem::isLeft && InputSystem::isDown) {
+		mover2->setAngle(225);
+	}
+	
 	if(InputSystem::isA) {
 		psys->add(mover2->pos.x, mover2->pos.y);
 		mover2->addAngle(10);

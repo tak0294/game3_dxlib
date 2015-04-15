@@ -18,7 +18,7 @@ Mover::Mover() {
 	////////////////////////////////////////
 	this->angle 		= 0;	//実際の角度 
 	this->destAngle 	= 0;	//目的の角度. 
-	this->angleFriction = 0.2;	//角度を変更する度合い. 
+	this->angleFriction = 0.1;	//角度を変更する度合い. 
 	
 }
 
@@ -67,7 +67,11 @@ void Mover::updateAngleToVel() {
 void Mover::setAngle(float angle) {
 	this->destAngle = angle;
 	if(abs(this->destAngle - this->angle) > 180) {
-		this->angle += 360;
+		if(this->destAngle > this->angle) {
+			this->destAngle = angle - 360;		
+		}else{
+			this->destAngle = angle + 360;
+		}
 	}
 	// 角度から進行ベクトルを更新. 
 	updateAngleToVel();
